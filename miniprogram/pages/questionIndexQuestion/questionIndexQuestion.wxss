@@ -1,0 +1,88 @@
+.body{
+  padding: 10rpx;
+  color: #3c3c3c;
+  font-size: 40rpx;
+  overflow: scroll;
+  position: relative;
+  margin-bottom: 80rpx;
+}
+.clearfix {
+  overflow: auto;
+  _height: 1%;
+}
+
+.questionType{
+  background-color: #37a3fc;
+  color: #eee;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 15rpx;
+  padding: 5rpx 15rpx;
+  margin-right: 20rpx;
+}
+.questionContent{
+  padding: 20rpx 10rpx;
+  display: block;
+  font-size: 35rpx;
+  border-bottom: 1px solid #ddd;
+  transition: all 0.5s;
+}
+.questionOption{
+  transition: all 0.5s;
+}
+.questionOption .optionNumber{
+  display: inline;
+  border: 1px solid #ddd;
+  border-radius: 100rpx;
+  padding: 0 10rpx ;
+  margin:10rpx;  
+}
+.questionOption .green{
+  color: #09d84e;
+  border-color: #09d84e;
+}
+
+.questionOption .red{
+  color: #fd0808;
+  border-color: #fd0808;
+}
+.questionOption .blue{
+  color: #0895f3;
+  border-color: #0895f3;
+}
+.questionOption .purple{
+  color: #e42ef5;
+  border-color: #e42ef5;
+}
+.questionOption .item{
+  display: block;
+  padding: 20rpx 10rpx;
+  font-size: 33rpx;
+}
+
+.answerBlock{
+  margin: 10rpx;
+  box-shadow: 0 0 10rpx #ddd;
+  padding:20rpx 10rpx 40rpx 10rpx;
+  margin-top: 40rpx;
+  border-radius: 15rpx;
+  position: relative;
+}
+.secTitle{
+  font-weight: 600;
+  padding:5rpx 15rpx;
+  font-size: 40rpx;
+  display: block;
+  margin-bottom: 15rpx;
+}
+
+.answerBlock .content{
+  font-size: 35rpx;
+}
+.answerBlock icon{
+  position: absolute;
+  right: 20rpx;
+  top :15rpx;
+  font-size: 50rpx;
+  color: blueviolet;
+}

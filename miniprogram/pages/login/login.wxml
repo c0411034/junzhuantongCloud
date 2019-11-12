@@ -1,0 +1,6 @@
+<!--miniprogram/pages/login/login.wxml-->
+<!-- <view class="loginView"> -->
+  <open-data class="loginAvatar" type="userAvatarUrl"></open-data>
+  <open-data class="loginNickName" type="userNickName"></open-data>
+  <button class="loginBtn" open-type="getUserInfo" bindtap="getUserInfos" >授权登陆</button>
+<!-- </view> -->

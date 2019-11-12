@@ -1,0 +1,45 @@
+.listItem {
+  margin-top: 40rpx;
+  height: 140rpx;
+  width: 100%;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: none;
+  border-right: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: all 300ms ease;
+}
+.listItem {
+  height: auto;
+  padding: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+.listItem navigator{
+  width: 100%;
+  padding: 20rpx 0;  
+  border-bottom: 1px solid #ddd;
+}
+.listItem navigator text{
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+.discription {
+  margin: 0 auto;
+}
+.discription .item{
+  float: left;
+  margin: 15rpx;
+  font-size: 33rpx;
+  text-align: center;
+}
+.discription .item .fa{
+  margin-top: -25rpx;
+}
+.discription .item text{
+  margin-left: 5rpx;
+}

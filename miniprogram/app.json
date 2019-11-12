@@ -1,0 +1,31 @@
+{
+  "pages": [
+    "pages/selectStudyType/selectStudyType",
+    "inputQuestion/inputQuestion",
+    "pages/searchQuestion/searchQuestion",
+    "pages/questionIndexQuestion/questionIndexQuestion",
+    "pages/selectChapters/selectChapters",
+    "pages/indexQuestion/indexQuestion",
+    "pages/test/test",
+    "pages/main/main",
+    "pages/question/question",
+    "pages/login/login",
+    "pages/index/index",
+    "pages/databaseGuide/databaseGuide",
+    "pages/addFunction/addFunction",
+    "pages/deployFunctions/deployFunctions",
+    "pages/chooseLib/chooseLib",
+    "pages/openapi/openapi",
+    "pages/openapi/serverapi/serverapi",
+    "pages/openapi/callback/callback",
+    "pages/openapi/cloudid/cloudid"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "自学精灵",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json"
+}

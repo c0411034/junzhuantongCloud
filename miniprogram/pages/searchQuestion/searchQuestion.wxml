@@ -1,0 +1,11 @@
+<!--miniprogram/pages/searchQuestion/searchQuestion.wxml-->
+<view class="inputGroup">
+  <input placeholder="请输入题目" confirm-type="search" focus bindinput="searchQuestion" value="{{inputValue}}" />
+  <button bindtap="clearInput">X</button>
+</view>
+
+<view class="listItem" wx:for="{{questionList}}" wx:key="">
+  <navigator url="/pages/questionIndexQuestion/questionIndexQuestion?id={{item._id}}&questionType={{item.questionType}}&content={{item.content}}&answer={{item.answer}}&analyze={{item.analyze}}&" open-type="navigate">
+    <text class="store-location">{{item.content}}</text>
+  </navigator>
+</view>

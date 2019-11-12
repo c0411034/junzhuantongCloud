@@ -1,0 +1,100 @@
+<!--miniprogram/pages/question/question.wxml-->
+<view>
+  <text class="title">军转考试 / {{groupQuestionList[currentQuestionIndex[0]].name}}</text>
+  <button bindtap="removeWrongQuestion" wx:if="{{currentQuestionType=='WRONG'}}" class="removeBtn">移出错题</button>
+</view>
+<view class="body">
+  <text class="questionContent" selectable="true"><text class="questionType">{{currentQuestion.questionType}}</text>{{currentQuestion.content}}</text>
+  <text hidden="hidden">{{currentQuestion._id}}</text>
+
+  <view class="questionOption" style="opacity:{{showQuestionOption}}">
+    <view class="item" wx:for="{{questionOption}}" wx:key="content" bindtap="optionTab" data-optionid="{{item._id}}" data-isCorrect='{{item.isCorrect}}'>
+      <text class="optionNumber {{item.color}}">{{questionOptionNumber[index]}}</text> {{item.content}}
+    </view>
+    <view class="submitOption" hidden="{{((currentQuestion.questionType=='多选'||currentQuestion.questionType=='简答'))?'':'true'}}">
+      <button bindtap="submitMutipleOrSAQ">提交</button>
+    </view>
+  </view>
+
+  <view class="buttonGroup">
+    <button bindtap="showPreQuestion" disabled="{{preQuestionBottonIsdisabled}}">上一题</button>
+    <button bindtap="showQuestionAnalyze">查看解析</button>
+    <button bindtap="showNextQuestion" disabled="{{nextQuestionBottonIsdisabled}}">下一题</button>
+  </view>
+  <view class="analyse answerBlock" hidden="{{showQuestionAnalyze?false:true}}">
+    <view>
+      <text class="secTitle">解  析</text>
+    </view>
+    <view class="content">
+      <text>{{currentQuestion.analyze}}</text>
+    </view>
+  </view>
+  <view class="note answerBlock" hidden="{{showQuestionAnalyze?false:true}}">
+    <view>
+      <text class="secTitle">笔  记</text>
+      <icon class="fa fa-edit" bindtap="startEditNoteQuestion"></icon>
+    </view>
+    <view class="content">
+      <text hidden="{{isEditNote}}">{{currentQuestion.answerStatus.note}}</text>
+      <textarea hidden="{{!isEditNote}}" maxlength="2047" placeholder="暂无笔记，请输入" bindblur="stopEditNoteQuestion" value="{{currentQuestion.answerStatus.note}}"></textarea>
+    </view>
+  </view>
+
+
+</view>
+
+<view class="bottom">
+  <view class="bottomBar">
+    <view class="left">
+      <view wx:if="{{currentQuestion.answerStatus.isCollection}}" bindtap="collectionQuestion">
+        <icon class="fa fa-star yellow" />
+        <text>已收藏</text>
+      </view>
+      <view wx:else bindtap="collectionQuestion">
+        <icon class="fa fa-star-o" />
+        <text>收藏</text>
+      </view>
+      <view wx:if="{{currentQuestion.answerStatus.isQuestion}}" bindtap="questionQuestion">
+        <icon class="fa fa-question-circle purple" />
+        <text>已疑惑</text>
+      </view>
+      <view wx:else bindtap="questionQuestion">
+        <icon class="fa fa-question-circle-o " />
+        <text>疑惑</text>
+      </view>
+    </view>
+    <view class="right" bindtap="showQuestionSelector">
+      <view>
+        <icon class="fa fa-th " />
+        <text>{{quesitonIndexNum}}/{{totalQuestiuonCount}}</text>
+      </view>
+      <view>
+        <icon class="fa fa-window-close " />
+        <text>0</text>
+      </view>
+      <view>
+        <icon class="fa fa-check-square " />
+        <text>0</text>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="questionSelectorShadow" bindtap="hiddenQuestionSelector" style="visibility:{{questionSelectorShadowVisible}};opacity:{{questionSelectorShadowOpacity}} "></view>
+<view class="questionSelector" style="top:{{questionSelectorTop}};height:{{questionSelectorHeight}};min-height:{{questionSelectorHeight}};visibility:{{questionSelectorShadowVisible}};">
+  <view class="titleView clearfix">
+    <view class="title">请选择题目：</view>
+    <view class="removeAll" bindtap="removeAllAnswerStatus">
+      <icon class="fa fa-trash-o" />
+    </view>
+  </view>
+  <view class="questionView ">
+    <view class="clearfix" wx:for="{{groupQuestionList}}" wx:key="index" wx:for-index="groupIndex" wx:for-item="groupItem" >
+      <view class="quesitonTitleSecond">{{groupItem.name}}</view>
+      <view class="questionItem {{item.answerStatus.lastAnswerStatus==true?'correct':''}} {{item.answerStatus.lastAnswerStatus==false?'wrong':''}}" wx:for="{{groupItem.questionList}}" wx:key="index" bindtap="gotoIndexQuestion" data-questionindex="{{[groupIndex,index]}}">
+        <icon wx:if="{{item.answerStatus.isCollection}}" class="fa fa-star" />
+        <icon wx:if="{{item.answerStatus.isQuestion}}" class="fa fa-question-circle" />
+        <icon wx:if="{{item.answerStatus.note!=null&&item.answerStatus.note!=''}}" class="fa fa-edit" /> {{index+1}}
+      </view>
+    </view>
+  </view>
+</view>

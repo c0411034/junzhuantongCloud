@@ -1,0 +1,27 @@
+
+<view class="body">
+  <text class="questionContent" selectable="true" ><text class="questionType">{{currentQuestion.questionType}}</text>{{currentQuestion.content}}</text>
+  <text hidden="hidden">{{currentQuestion._id}}</text>
+
+  <view class="questionOption" style="opacity:{{showQuestionOption}}">
+    <view  class="item" wx:for="{{questionOption}}" wx:key="content" bindtap="optionTab"  data-optionid="{{item._id}}" data-isCorrect='{{item.isCorrect}}'>
+      <text class="optionNumber {{item.color}}">{{questionOptionNumber[index]}}</text> {{item.content}}
+    </view>
+
+  </view>
+
+  <view class="analyse answerBlock" >
+    <view>
+      <text class="secTitle">解  析</text>
+    </view>
+    <view class="content">
+      <text>{{currentQuestion.analyze}}</text>
+    </view>
+  </view>
+  <view class="note answerBlock" >
+    <view>
+      <text class="secTitle">笔  记</text>
+      <icon class="fa fa-edit" bindtap="startEditNoteQuestion"></icon>
+    </view>
+  </view>
+</view>

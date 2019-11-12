@@ -1,0 +1,223 @@
+
+.body{
+  padding: 10rpx;
+  color: #3c3c3c;
+  font-size: 40rpx;
+  overflow: scroll;
+  position: relative;
+  margin-bottom: 80rpx;
+}
+.clearfix {
+  overflow: auto;
+  _height: 1%;
+}
+.title{
+  font-size: 30rpx;
+  color: #999;
+  padding-left: 10rpx;
+}
+.yellow{
+  color: #f7e26e;
+}
+.purple{
+  color: #f808bc;
+}
+.questionType{
+  background-color: #37a3fc;
+  color: #eee;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 15rpx;
+  padding: 5rpx 15rpx;
+  margin-right: 20rpx;
+}
+.questionContent{
+  padding: 20rpx 10rpx;
+  display: block;
+  font-size: 35rpx;
+  border-bottom: 1px solid #ddd;
+  transition: all 0.5s;
+}
+.questionOption{
+  transition: all 0.5s;
+}
+.questionOption .optionNumber{
+  display: inline;
+  border: 1px solid #ddd;
+  border-radius: 100rpx;
+  padding: 0 10rpx ;
+  margin:10rpx;  
+}
+.questionOption .green{
+  color: #09d84e;
+  border-color: #09d84e;
+}
+
+.questionOption .red{
+  color: #fd0808;
+  border-color: #fd0808;
+}
+.questionOption .blue{
+  color: #0895f3;
+  border-color: #0895f3;
+}
+.questionOption .purple{
+  color: #e42ef5;
+  border-color: #e42ef5;
+}
+.questionOption .item{
+  display: block;
+  padding: 20rpx 10rpx;
+  font-size: 33rpx;
+}
+.submitOption button{
+  font-size: 35rpx;
+  background-color: #37a3fc;
+  margin:25rpx 100rpx 30rpx 100rpx;
+  color: #fff;
+}
+.buttonGroup{
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #ddd;
+  padding-top: 20rpx;
+}
+
+.buttonGroup button{
+  flex:1;
+  font-size: 35rpx;
+  background-color: #37a3fc;
+  margin: 10rpx 25rpx;
+  color: #fff;
+}
+.bottom{
+  position:fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+}
+.bottomBar{
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  font-size: 35rpx;
+}
+.bottomBar icon{
+  margin: 0 5rpx;
+}
+.bottomBar .left{
+  display: flex;
+  flex-direction: row;
+  flex:1;
+}
+.bottomBar .left view{
+  padding: 10rpx 5rpx 20rpx 5rpx;
+  flex:1;
+}
+.bottomBar .right{
+  flex:1.5;
+}
+.bottomBar .right view{
+  float:right;
+  padding: 10rpx 15rpx 20rpx 15rpx;
+}
+.answerBlock{
+  margin: 10rpx;
+  box-shadow: 0 0 10rpx #ddd;
+  padding:20rpx 10rpx 40rpx 10rpx;
+  margin-top: 40rpx;
+  border-radius: 15rpx;
+  position: relative;
+}
+.secTitle{
+  font-weight: 600;
+  padding:5rpx 15rpx;
+  font-size: 40rpx;
+  display: block;
+  margin-bottom: 15rpx;
+}
+
+.answerBlock .content{
+  font-size: 35rpx;
+}
+.answerBlock icon{
+  position: absolute;
+  right: 20rpx;
+  top :15rpx;
+  font-size: 50rpx;
+  color: blueviolet;
+}
+.questionSelectorShadow{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.5s;
+}
+.questionSelector{
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  height: 0;
+  overflow: scroll;
+  transition: all 0.5s;
+  box-shadow:0  -20rpx 50rpx rgba(0, 0, 0, 0.5);
+}
+.questionSelector .title{
+  color: #777;
+  font-size: 35rpx;
+  margin: 20rpx;
+  float: left;
+}
+
+.questionSelector .removeAll{
+  color: #777;
+  font-size: 45rpx;
+  margin: 15rpx 40rpx 0 0;
+  float: right;
+}
+.questionSelector .questionItem{
+  width: 40px;
+  height: 30px;
+  float: left;
+  border: 1px solid #ddd;
+  border-radius:100px;
+  text-align: center;
+  padding-top: 10px;
+  margin: 10px;
+  position: relative;
+
+}
+.questionItem icon{
+  font-size: 8px;
+  position: absolute;
+}
+.questionItem .fa-star{
+  top:-10px;
+  left: 7px;
+  color: #f1d00f;
+}
+
+.questionItem .fa-question-circle{
+  top:10px;
+  left: 7px;
+  color: #f808bc;
+}
+
+.questionItem .fa-edit{
+  top:-10px;
+  left: 26px;
+  color: #0ca6e2;
+}
+.questionSelector .correct{
+  border-color: #08df1a;
+  background-color: #cbe9ce;
+}
+
+.questionSelector .wrong{
+  border-color: #f30404;
+  background-color: #f8f0f0;
+}

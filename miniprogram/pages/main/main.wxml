@@ -1,0 +1,6 @@
+<!--miniprogram/pages/main/main.wxml-->
+  <view class="uploader">
+    <navigator url="../selectChapters/selectChapters" open-type="navigate" class="uploader-text">
+      <text>军转考试学习</text>
+    </navigator>
+  </view>

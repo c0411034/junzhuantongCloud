@@ -1,0 +1,57 @@
+.inputGroup {
+  display: flex;
+  flex-direction: row;
+}
+.inputGroup input{
+  flex:10;
+  border: 1px solid #aaa;
+  font-size: 40rpx;
+  padding: 10rpx 5rpx ;
+}
+
+.questionOption .green{
+  color: #09d84e;
+  border-color: #09d84e;
+}
+.inputGroup button{
+  flex:1;
+  border: 1px solid #aaa;
+  font-size: 30rpx;
+  padding:0;
+  height: 80rpx;
+}
+.listItem {
+  height: 140rpx;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: none;
+  border-right: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: all 300ms ease;
+}
+.listItem {
+  height: auto;
+  padding: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+.listItem navigator{
+  width: 100%;
+  padding: 15rpx 0;
+}
+.listItem navigator text{
+  width: 100%;
+  display: block;
+  padding: 0 5rpx;
+  font-size: 35rpx;
+}
+.store-location{
+    width: 450rpx;
+     overflow: hidden;/*隐藏 */
+    white-space: nowrap;/*不换行*/
+    text-overflow: ellipsis;/*最后以...结尾*/
+}

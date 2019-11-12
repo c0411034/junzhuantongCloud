@@ -1,0 +1,41 @@
+
+  <view class="listItem">
+    <navigator url="/pages/selectChapters/selectChapters" open-type="navigate" >
+      <text>分章练</text>
+    </navigator>
+  </view>
+  
+  <view class="listItem">
+    <navigator url="" open-type="navigate" >
+      <text>随机练</text>
+    </navigator>
+  </view>
+
+  <view class="listItem">
+    <navigator url="/pages/indexQuestion/indexQuestion?questionType=WRONG" open-type="navigate" >
+      <text>错题库</text>
+    </navigator>
+  </view>
+  
+  <view class="listItem">
+    <navigator url="/pages/indexQuestion/indexQuestion?questionType=COLLECTION" open-type="navigate" >
+      <text>收藏题库</text>
+    </navigator>
+  </view>
+  
+  <view class="listItem">
+    <navigator url="/pages/indexQuestion/indexQuestion?questionType=QUESTION" open-type="navigate" >
+      <text>疑惑题库</text>
+    </navigator>
+  </view>
+  
+  <view class="listItem">
+    <navigator url="" open-type="navigate" >
+      <text>笔记题库</text>
+    </navigator>
+  </view>
+  <view class="listItem">
+    <navigator url="/pages/searchQuestion/searchQuestion" open-type="navigate" >
+      <text>快速搜题</text>
+    </navigator>
+  </view>

@@ -1,0 +1,6 @@
+<!--miniprogram/inputQuestion/inputQuestion.wxml-->
+<button bindtap="inputSingleQuestion">导入单选多选题库</button>
+<button bindtap="inputMutiQuestion">导入多选题库</button>
+<button bindtap="inputJudgeQuestion">导入判断题库</button>
+<button bindtap="">导入简答题库</button>
+<button bindtap="deleteQuestion">删除题目</button>
