@@ -19,10 +19,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let startDate = new Date().getTime()
-    getWrongQuestion()
-    let useDate = new Date().getTime() - startDate
-    console.log("useTime:"+useDate)
+    var testUtil=require('../../utils/localAnswerStatusUtils.js')
+    testUtil.setAnswerStatus()
   },
 
   /**
@@ -36,7 +34,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    // var date1 = new Date.getTime()
+    // console.log(date1) 
+    // getQuestionIndexId("9afd9b6a5d2bd57e07b1a6850f2967cd")
+    // var date2 = new Date()
+    // console.log(date2 )
+    // console.log(date2-date1)
   },
 
   /**
@@ -88,4 +91,30 @@ function getQuestionIndexId(questionId) {
    }).get().then(res => {
      console.log(res.data)
    })
+}
+
+function getQuestionListIndexSkip(secondTitleId, skip) {
+  console.log("getQuestionListIndexSkip:" + skip)
+  return new Promise((resolve, reject) => {
+    let selectPromise;
+
+    if (skip > 0) {
+      selectPromise = db.collection('Questions').where({
+        "titleSecond": secondTitleId
+      }).skip(skip).get()
+    } else {
+      //skip值为0时，会报错
+      selectPromise = db.collection('Questions').where({
+        "titleSecond": secondTitleId
+      }).get()
+    }
+    selectPromise.then(res => {
+      console.log("getQuestionListIndexSkip:" + skip)
+      console.log(res)
+      resolve(res.data);
+    }).catch(e => {
+      console.error(e)
+      reject("查询失败!")
+    })
+  })
 }

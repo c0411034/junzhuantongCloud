@@ -10,15 +10,17 @@ Page({
     currentQuestionTitleSecondId: "",
     currentQuestionTitleSecondName: "",
     questionList: [],
-    groupQuestionList: [],
-    currentQuestionIndex: [0, 0],
+    groupQuestionList: [],//UNKNOW
+    currentQuestionIndex: [0, 0],//UNKNOW 为何是数组
     quesitonIndexNum: 0,
     currentQuestion: {},
     totalQuestiuonCount: 0,
+    //当前题目的内容
     questionType: "单选",
     questionContent: "题目",
     questionOption: [],
     questionOptionNumber: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+    //用于显示的的变量参数
     nextQuestionBottonIsdisabled: false,
     preQuestionBottonIsdisabled: false,
     showQuestionContent: "0",
