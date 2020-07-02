@@ -11,16 +11,12 @@ Page({
     testdata:"66666",
     subject: ["Ch", "En", "Math", "physics"] 
   },
-  testinarray:function(){
-    console.log(333)
-    return "3432"
-  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var testUtil=require('../../utils/localAnswerStatusUtils.js')
-    testUtil.setAnswerStatus()
+    console.log("start test")
+    getLocalAnswerStatus();
   },
 
   /**
@@ -77,6 +73,29 @@ Page({
 
   }
 })
+function testSaveLocalAnswerStatus(){
+  let as={
+    "9afd9b6a5d2bd57e07b1a6850f2967cd":{
+      lastAnswerStatus:false,
+      mistakeCount:0,
+      correctCount:0,
+      isQuestion:false,
+      isCollection:false,
+      lastAnswer:["face13585d3fea490661b92c4a4d07b3","26b301645d3fea49065eb9167cc2f71d","25c59b425d3fea49066074c9359c03c6","890198e15d3fea49065f80ed5c568b01"], 
+      isWrongQuestion:false
+    }
+  }
+  var localAnswerStatusUtil = require('../../utils/AnswerStatusUtil.js')
+  let answerStatus=localAnswerStatusUtil.save("995a38e9-f7cd-4125-8ee3-f50614c6a036",as)
+  console.log("saved!");
+  console.log(answerStatus);
+}
+function getLocalAnswerStatus(){
+  var localAnswerStatusUtil = require('../../utils/AnswerStatusUtil.js')
+  let answerStatus=localAnswerStatusUtil.get("995a38e9-f7cd-4125-8ee3-f50614c6a036")
+  console.log("answerStatus get");
+  console.log(answerStatus);
+}
 function getWrongQuestion() {
   db.collection('UserAnswerStatus').where({
     "studyUserId": "oDWSL5b76ShTCkExoHdY3Z7sk8jg",

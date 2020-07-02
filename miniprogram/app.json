@@ -1,11 +1,11 @@
 {
   "pages": [
-    "pages/test/test",
     "pages/selectStudyType/selectStudyType",
+    "pages/selectChapters/selectChapters",
+    "pages/test/test",
     "inputQuestion/inputQuestion",
     "pages/searchQuestion/searchQuestion",
     "pages/questionIndexQuestion/questionIndexQuestion",
-    "pages/selectChapters/selectChapters",
     "pages/indexQuestion/indexQuestion",
     "pages/main/main",
     "pages/question/question",
@@ -16,8 +16,7 @@
     "pages/chooseLib/chooseLib",
     "pages/openapi/openapi",
     "pages/openapi/serverapi/serverapi",
-    "pages/openapi/callback/callback",
-    "pages/openapi/cloudid/cloudid"
+    "pages/openapi/callback/callback"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

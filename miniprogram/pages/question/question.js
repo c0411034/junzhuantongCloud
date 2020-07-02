@@ -27,7 +27,8 @@ Page({
     questionSelectorShadowVisible: "hidden",
     questionSelectorShadowOpacity: "0",
     isEditNote: false,
-    openid: "none"
+    openid: "none",
+    localAnswerStatus:{},
   },
 
   /**
@@ -42,9 +43,12 @@ Page({
       _this.setData({
         openid: res.result.openid
       })
+      var localAnswerStatusUtil = require('../../utils/AnswerStatusUtil.js')
+      let answerStatus=localAnswerStatusUtil.get(options.questionTitleSecond)
       this.setData({
         currentQuestionTitleSecondId: options.questionTitleSecond,
-        currentQuestionTitleSecondName: options.questionTitleName
+        currentQuestionTitleSecondName: options.questionTitleName,
+        localAnswerStatus:answerStatus,
       })
       getQuesionList(options.questionTitleSecond, this);
     })
@@ -53,49 +57,35 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
-
-  },
-
+  onReady: function() {},
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function() {},
-
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
-
-  },
+  onHide: function() {},
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
-
-  },
+  onUnload: function() {},
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
-
-  },
+  onPullDownRefresh: function() {},
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
-
-  },
+  onReachBottom: function() {},
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
-
-  },
+  onShareAppMessage: function() {},
   showNextQuestion: function() {
     showNextQuestion(this)
   },
@@ -336,9 +326,6 @@ Page({
     return this.data.currentQuestion.answerStatus.lastAnswerStatus == null ? false : true
   }
 })
-
-
-
 //获取该分类下的所有题目
 function getQuesionList(secondTitleId, _this) {
   wx.cloud.callFunction({
@@ -349,6 +336,11 @@ function getQuesionList(secondTitleId, _this) {
   })
   // getQuestionList(secondTitleId, _this)
   .then(res => {
+    let questionList=res.result
+    _this.setData({
+      questionList: questionList,
+      totalQuestiuonCount: questionList.length
+    })
     getAnswerStatusIndexQuestionList(res.result, _this)
       .then(res => {
         console.log(res)
@@ -607,7 +599,14 @@ function mutipleOptionAnswer(options) {
     answer: answer
   }
 }
-
+function getAnswerStatusIndexQuestionListFormLocal(questionList) {
+  for (let item of questionList) {
+    item.answerStatus=localAnswerStatus[item._id]
+    getAnswerStatusIndexQuestionAndUser(item._id,_this)
+  }
+  console.log(questionList)
+  return questionList;
+}
 function getAnswerStatusIndexQuestionList(questionList, _this) {
   return new Promise((resolve, reject) => {
     let myQuestionList = new Array()
