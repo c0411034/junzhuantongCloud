@@ -1,5 +1,6 @@
 // miniprogram/pages/question/question.js
 const db = wx.cloud.database()
+var localAnswerStatusUtil = require('../../utils/AnswerStatusUtil.js')
 Page({
 
   /**
@@ -43,7 +44,6 @@ Page({
       _this.setData({
         openid: res.result.openid
       })
-      var localAnswerStatusUtil = require('../../utils/AnswerStatusUtil.js')
       let answerStatus=localAnswerStatusUtil.get(options.questionTitleSecond)
       this.setData({
         currentQuestionTitleSecondId: options.questionTitleSecond,
@@ -98,7 +98,7 @@ Page({
     })
   },
   optionTab: function(event) {
-    if (this.currentQuestionIsHaveAnswer()) {
+    if (currentQuestionIsHaveAnswer(this)) {
       //已答题过，不再响应事件
       return
     }
@@ -117,55 +117,25 @@ Page({
       this.setData({
         questionOption: options
       })
+      return;
     } else if (this.data.currentQuestion.questionType == "单选") {
       console.log(event)
       let isCorrect = event.currentTarget.dataset.iscorrect
-      this.data.currentQuestion.answerStatus.lastAnswerStatus = isCorrect;
-      this.data.currentQuestion.answerStatus.lastAnswer = optionId;
-      wx.cloud.callFunction({
-        name: 'submitQuestionAnswer',
-        data: {
-          isCorrect: isCorrect,
-          answer: optionId,
-          questionId: this.data.currentQuestion._id
-        }
-      }).then(res => {
-        console.log("submitSQuestionAnswer");
-        console.log(res);
-        console.log(isCorrect + "|" + optionId);
-        console.log(this.data.questionOption);
-      })
-      let options = colorfulOptions(this, this.data.currentQuestion.questionOption)
-      this.setData({
-        currentQuestion: this.data.currentQuestion,
-        questionOption: options,
-        questionList: this.data.questionList
-      })
-      this.showQuestionAnalyze();
+      answerQuestion(this,this.data.currentQuestion._id,optionId,isCorrect);
     } else if (this.data.currentQuestion.questionType == "判断") {
       let isCorrect = event.currentTarget.dataset.iscorrect
-      this.data.currentQuestion.answerStatus.lastAnswerStatus = isCorrect;
-      this.data.currentQuestion.answerStatus.lastAnswer = this.data.currentQuestion.answer ? isCorrect : !isCorrect;
-      wx.cloud.callFunction({
-        name: 'submitQuestionAnswer',
-        data: {
-          isCorrect: isCorrect,
-          answer: this.data.currentQuestion.answer ? isCorrect : !isCorrect,
-          questionId: this.data.currentQuestion._id
-        }
-      }).then(res => {
-        console.log("submitQuestionAnswer");
-        console.log(res);
-      })
-      let colorOption = colorfulOptions(this, this.data.questionOption)
-      this.data.currentQuestion.options = colorOption
-            refreshQuestion(this.data.currentQuestion, this)
-      this.setData({
-        questionList: this.data.questionList,
-        questionOption: colorOption
-      })
-      this.showQuestionAnalyze();
-    }
+      let answer=this.data.currentQuestion.answer ? isCorrect : !isCorrect
+      answerQuestion(this,this.data.currentQuestion._id,answer,isCorrect);
+
+    }         
+    let colorOption = colorfulOptions(this, this.data.questionOption)
+    this.data.currentQuestion.options = colorOption
+          refreshQuestion(this.data.currentQuestion, this)
+    this.setData({
+      questionList: this.data.questionList,
+      questionOption: colorOption
+    })
+    this.showQuestionAnalyze();
   },
   submitMutipleOrSAQ: function() {
     let answer = mutipleOptionAnswer(this.data.questionOption)
@@ -191,40 +161,16 @@ Page({
     this.showQuestionAnalyze();
   },
   collectionQuestion: function(event) {
-    let isCollection = !this.data.currentQuestion.answerStatus.isCollection;
-    this.data.currentQuestion.answerStatus.isCollection = isCollection;
-    this.setData({
-      currentQuestion: this.data.currentQuestion,
-      questionList: this.data.questionList
-    })
-    wx.cloud.callFunction({
-      name: 'collectionQuestion',
-      data: {
-        isCollection: isCollection,
-        questionId: this.data.currentQuestion._id
-      }
-    }).then(res => {
-      console.log("collectionQuestion");
-      console.log(res);
-    })
+    let questionId=this.data.currentQuestion._id
+    let answerStatus=getAnswerStatus(this,questionId)
+    answerStatus.isCollection = !answerStatus.isCollection;
+    updateAnswerStatus(this,questionId,answerStatus)
   },
-  questionQuestion: function(event) {
-    let isQuestion = !this.data.currentQuestion.answerStatus.isQuestion;
-    this.data.currentQuestion.answerStatus.isQuestion = isQuestion;
-    this.setData({
-      currentQuestion: this.data.currentQuestion,
-      questionList: this.data.questionList
-    })
-    wx.cloud.callFunction({
-      name: 'questionQuestion',
-      data: {
-        isQuestion: isQuestion,
-        questionId: this.data.currentQuestion._id
-      }
-    }).then(res => {
-      console.log("questionnQuestion");
-      console.log(res);
-    })
+  questionQuestion: function(event) {    
+    let questionId=this.data.currentQuestion._id
+    let answerStatus=getAnswerStatus(this,questionId)
+    answerStatus.isQuestion = !answerStatus.isQuestion;
+    updateAnswerStatus(this,questionId,answerStatus)
   },
   startEditNoteQuestion: function(event) {
     this.setData({
@@ -232,37 +178,21 @@ Page({
     })
   },
   stopEditNoteQuestion: function(event) {
-    let noteContent = event.detail.value
-    if (this.data.currentQuestion.answerStatus.note == noteContent) {
+    let questionId=this.data.currentQuestion._id
+    let answerStatus=getAnswerStatus(this,questionId)
+    let noteContent = event.detail.value    
+    this.setData({
+      isEditNote: false
+    })
+    if (answerStatus.note == noteContent) {
       return
     }
-    console.log(noteContent)
-    this.data.currentQuestion.answerStatus.note = noteContent;
-    wx.cloud.callFunction({
-      name: 'editNoteQuestion',
-      data: {
-        note: noteContent,
-        questionId: this.data.currentQuestion._id
-      }
-    }).then(res => {
-      console.log("editNoteQuestion");
-      console.log(res);
-      wx.showToast({
-        title: '笔记已保存',
-        icon: 'success',
-        duration: 1000
-      })
-      this.setData({
-        isEditNote: false,
-        currentQuestion: this.data.currentQuestion,
-        questionList: this.data.questionList
-      })
-    }).catch(e => {
-      wx.showToast({
-        title: '笔记保存失败' + e,
-        icon: 'none',
-        duration: 1000
-      })
+    answerStatus.note = noteContent;    
+    updateAnswerStatus(this,questionId,answerStatus)
+    wx.showToast({
+      title: '笔记已保存',
+      icon: 'success',
+      duration: 1000
     })
   },
   showQuestionSelector: function() {
@@ -320,12 +250,18 @@ Page({
       }
     })
   },
-  /**工具函数 */
-  currentQuestionIsHaveAnswer: function() {
-    //当前题目是否已经回答过
-    return this.data.currentQuestion.answerStatus.lastAnswerStatus == null ? false : true
-  }
+  
 })
+/**工具函数 */
+function currentQuestionIsHaveAnswer(_this) {
+  //当前题目是否已经回答过
+let curentQuestion = _this.data.currentQuestion;
+let answerStatus=getAnswerStatus(_this,curentQuestion._id)
+if (answerStatus.lastAnswer!="" ){
+  return true;
+}
+return false;
+}
 //获取该分类下的所有题目
 function getQuesionList(secondTitleId, _this) {
   wx.cloud.callFunction({
@@ -341,50 +277,7 @@ function getQuesionList(secondTitleId, _this) {
       questionList: questionList,
       totalQuestiuonCount: questionList.length
     })
-    getAnswerStatusIndexQuestionList(res.result, _this)
-      .then(res => {
-        console.log(res)
-        let questionList=res
-        _this.setData({
-          questionList: questionList,
-          totalQuestiuonCount: questionList.length
-            })
-            // questionUtils.showFirstQuestion(_this);
-            showFirstQuestion(_this);
-
-      })
-    console.log(res);
-    // let questionList=res.result
-    // let myQuestionList = new Array()
-    // for (let item of questionList) {
-    //   setTimeout(function () {
-    //   wx.cloud.callFunction({
-    //     name: 'getAnswerStatusIndexQuestionList',
-    //     data: {
-    //       quesionList: questionList
-    //     }
-    //   }).then(res => {
-    //     console.log(res);
-    //     console.log(questionList.indexOf(item));
-    //     let answerStatus = res.result
-    //     item.answerStatus = answerStatus
-    //     myQuestionList.push(item);
-    //     setTimeout(function () {//这里必须要延时处理，否则下面逻辑无法为真
-    //       if (questionList.length == myQuestionList.length) {
-    //         _this.setData({
-    //           questionList: myQuestionList,
-    //           totalQuestiuonCount: myQuestionList.length
-    //         })
-    //         questionUtils.showFirstQuestion(_this);
-    //         showFirstQuestion(_this);
-    //       }
-    //     }, 0)
-
-    //   })
-    //   },500)
-    // }
-
-
+    showFirstQuestion(_this);
   })
 }
 
@@ -440,13 +333,14 @@ function showQuestionOption(questionId, _this) {
  */
 function colorfulOptions(_this, options) {
   let curentQuestion = _this.data.currentQuestion;
-  if (_this.currentQuestionIsHaveAnswer()) {
+  let answerStatus=getAnswerStatus(_this,curentQuestion._id)
+  if (answerStatus.lastAnswer!="") {//有过答题记录
     for (let item of options) {
       if (item.isCorrect) {
         if (curentQuestion.questionType == "多选") {
-          if (!curentQuestion.answerStatus.lastAnswerStatus) {
+          if (! answerStatus.lastAnswerStatus) {
             //未答对
-            if (curentQuestion.answerStatus.lastAnswer.indexOf(item._id) > -1) {
+            if (answerStatus.lastAnswer.indexOf(item._id) > -1) {
               //被选中过              
               item.color = "purple"
               continue;
@@ -458,19 +352,19 @@ function colorfulOptions(_this, options) {
         item.color = "green"
       } else {
         if (curentQuestion.questionType == "多选") {
-          if (curentQuestion.answerStatus.lastAnswer.indexOf(item._id) > -1) {
+          if (answerStatus.lastAnswer.indexOf(item._id) > -1) {
             //被选中过
             item.color = "red"
             continue;
           }
         } else if (curentQuestion.questionType == "单选") {
-          if (curentQuestion.answerStatus.lastAnswer == item._id) {
+          if (answerStatus.lastAnswer == item._id) {
             //被选中过
             item.color = "red"
             continue;
           }
         } else if (curentQuestion.questionType == "判断") {
-          if (curentQuestion.answerStatus.lastAnswerStatus == false) {
+          if (answerStatus.lastAnswerStatus == false) {
             //如果这个选项是错的,且答题结果也是错的，说明答题时选择的是此选项
             item.color = "red"
             continue;
@@ -497,7 +391,7 @@ function refreshQuestion(question, _this) {
 当用户有答题记录时，显示第1道未答题目
  */
 function showFirstQuestion(_this) {
-  let questionIndex = findFirstQuestionIsNoAnswewer(_this.data.questionList);
+  let questionIndex = findFirstQuestionIsNoAnswewer(_this,_this.data.questionList);
   _this.setData({
     currentQuestionIndex: questionIndex
   });
@@ -536,10 +430,11 @@ function showPreQuestion(_this) {
   }
 }
 //在题库中找到第一个未答过的题目，返回index,若都答过，返回最后一题的index
-function findFirstQuestionIsNoAnswewer(questionList) {
+function findFirstQuestionIsNoAnswewer(_this,questionList) {
   let length = questionList.length
   for (var i = 0; i < length; i++) {
-    if (questionList[i].answerStatus == null || questionList[i].answerStatus.lastAnswerStatus == null) {
+    let answerStatus=_this.data.localAnswerStatus[questionList[i]._id]
+    if (answerStatus == null || answerStatus.lastAnswerStatus == null) {
       return i;
     }
   }
@@ -598,34 +493,6 @@ function mutipleOptionAnswer(options) {
     isCorrect: isCorrect,
     answer: answer
   }
-}
-function getAnswerStatusIndexQuestionListFormLocal(questionList) {
-  for (let item of questionList) {
-    item.answerStatus=localAnswerStatus[item._id]
-    getAnswerStatusIndexQuestionAndUser(item._id,_this)
-  }
-  console.log(questionList)
-  return questionList;
-}
-function getAnswerStatusIndexQuestionList(questionList, _this) {
-  return new Promise((resolve, reject) => {
-    let myQuestionList = new Array()
-    for (let item of questionList) {
-      getAnswerStatusIndexQuestionAndUser(item._id,_this)
-        .then(res => {
-          item.answerStatus = res
-          myQuestionList.push(item); 
-          console.log(questionList.indexOf(item));
-          setTimeout(function() { //这里必须要延时处理，否则下面逻辑无法为真
-            if (questionList.length == myQuestionList.length) {
-              resolve(questionList);
-            }
-          }, 0)
-        }).catch(e => {
-          reject(e)
-        })
-    }
-  })
 }
 
 function getAnswerStatusIndexQuestionAndUser(questionId, _this) {
@@ -713,4 +580,34 @@ function getQuestionListIndexSkip(secondTitleId, skip) {
       reject("查询失败!")
     })
   })
+}
+/**
+ * 回答问题，提交答案
+ */
+function answerQuestion(_this,questionId,answer,isCorrect){
+  let answerStatus=getAnswerStatus(_this,questionId)
+  answerStatus.lastAnswerStatus = isCorrect;
+  answerStatus.lastAnswer=answer;
+  answerStatus.isCorrect=isCorrect;
+  updateAnswerStatus(_this,questionId,answerStatus)
+}
+
+function saveLocalAnswerStatus(_this){
+  localAnswerStatusUtil.save(_this.data.currentQuestionTitleSecondId,_this.data.localAnswerStatus)
+  console.log("save answerStatus success! ")
+}
+/**
+ * 在本级的answerStatus（指定titleId的AnswerStatus)中获取AnswerStatus，若无，返回一个空的AnswerStatus.
+ */
+function getAnswerStatus(_this,questionId) {
+  return _this.data.localAnswerStatus[questionId]==null?getInitAnswerStatus():_this.data.localAnswerStatus[questionId]  
+}
+
+function updateAnswerStatus(_this,questionId,answerStatus){
+  
+  _this.data.localAnswerStatus[questionId]=answerStatus
+  _this.setData({
+    localAnswerStatus:_this.data.localAnswerStatus
+  })
+  saveLocalAnswerStatus(_this);
 }

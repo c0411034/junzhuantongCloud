@@ -75,13 +75,14 @@ Page({
 })
 function testSaveLocalAnswerStatus(){
   let as={
-    "9afd9b6a5d2bd57e07b1a6850f2967cd":{
+    "25c59b425d4a4eaf0dc5afae047c8279":{
       lastAnswerStatus:false,
       mistakeCount:0,
       correctCount:0,
-      isQuestion:false,
+      isQuestion:true,
       isCollection:false,
-      lastAnswer:["face13585d3fea490661b92c4a4d07b3","26b301645d3fea49065eb9167cc2f71d","25c59b425d3fea49066074c9359c03c6","890198e15d3fea49065f80ed5c568b01"], 
+      lastAnswer:[], 
+      lastAnswerStatus:null,
       isWrongQuestion:false
     }
   }

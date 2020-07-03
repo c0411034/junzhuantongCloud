@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/selectStudyType/selectStudyType",
-    "pages/selectChapters/selectChapters",
     "pages/test/test",
+    "pages/selectChapters/selectChapters",
     "inputQuestion/inputQuestion",
     "pages/searchQuestion/searchQuestion",
     "pages/questionIndexQuestion/questionIndexQuestion",

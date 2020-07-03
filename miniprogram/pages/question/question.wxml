@@ -10,7 +10,7 @@
     <view  class="item" wx:for="{{questionOption}}" wx:key="content" bindtap="optionTab"  data-optionid="{{item._id}}" data-isCorrect='{{item.isCorrect}}'>
       <text class="optionNumber {{item.color}}">{{questionOptionNumber[index]}}</text> {{item.content}}
     </view>
-    <view class="submitOption" hidden="{{((currentQuestion.questionType=='多选'||currentQuestion.questionType=='简答')&&currentQuestion.answerStatus.lastAnswerStatus==null)?'':'true'}}">
+    <view class="submitOption" hidden="{{((currentQuestion.questionType=='多选'||currentQuestion.questionType=='简答')&&localAnswerStatus[currentQuestion._id].lastAnswerStatus==null)?'':'true'}}">
       <button bindtap="submitMutipleOrSAQ">提交</button>
     </view>
   </view>
@@ -20,7 +20,7 @@
     <button bindtap="showQuestionAnalyze">查看解析</button>
     <button bindtap="showNextQuestion" disabled="{{nextQuestionBottonIsdisabled}}">下一题</button>
   </view>
-  <view class="analyse answerBlock" hidden="{{currentQuestion.answerStatus.lastAnswerStatus!=null||showQuestionAnalyze?false:true}}">
+  <view class="analyse answerBlock" hidden="{{localAnswerStatus[currentQuestion._id].lastAnswerStatus!=null||showQuestionAnalyze?false:true}}">
     <view>
       <text class="secTitle">解  析</text>
     </view>
@@ -28,14 +28,14 @@
       <text>{{currentQuestion.analyze}}</text>
     </view>
   </view>
-  <view class="note answerBlock" hidden="{{currentQuestion.answerStatus.lastAnswerStatus!=null||showQuestionAnalyze?false:true}}">
+  <view class="note answerBlock" hidden="{{localAnswerStatus[currentQuestion._id].lastAnswerStatus!=null||showQuestionAnalyze?false:true}}">
     <view>
       <text class="secTitle">笔  记</text>
       <icon class="fa fa-edit" bindtap="startEditNoteQuestion"></icon>
     </view>
     <view class="content">
-    <text hidden="{{isEditNote}}" >{{currentQuestion.answerStatus.note}}</text>
-      <textarea hidden="{{!isEditNote}}" maxlength="2047" placeholder="暂无笔记，请输入" bindblur="stopEditNoteQuestion" value="{{currentQuestion.answerStatus.note}}"></textarea>
+    <text hidden="{{isEditNote}}" >{{localAnswerStatus[currentQuestion._id].note}}</text>
+      <textarea hidden="{{!isEditNote}}" maxlength="2047" placeholder="暂无笔记，请输入" bindblur="stopEditNoteQuestion" value="{{localAnswerStatus[currentQuestion._id].note}}"></textarea>
     </view>
   </view>
 
@@ -45,7 +45,7 @@
 <view class="bottom">
   <view class="bottomBar">
     <view class="left">
-      <view wx:if="{{currentQuestion.answerStatus.isCollection}}" bindtap="collectionQuestion">
+      <view wx:if="{{localAnswerStatus[currentQuestion._id].isCollection}}" bindtap="collectionQuestion">
         <icon class="fa fa-star yellow" />
         <text>已收藏</text>
       </view>
@@ -53,7 +53,7 @@
         <icon class="fa fa-star-o" />
         <text>收藏</text>
       </view>
-      <view wx:if="{{currentQuestion.answerStatus.isQuestion}}" bindtap="questionQuestion">
+      <view wx:if="{{localAnswerStatus[currentQuestion._id].isQuestion}}" bindtap="questionQuestion">
         <icon class="fa fa-question-circle purple" />
         <text>已疑惑</text>
       </view>
@@ -87,10 +87,10 @@
     </view>
   </view>
   <view class="questionView">
-    <view class="questionItem {{item.answerStatus.lastAnswerStatus==true?'correct':''}} {{item.answerStatus.lastAnswerStatus==false?'wrong':''}}" wx:for="{{questionList}}" wx:key="index" bindtap="gotoIndexQuestion" data-questionindex="{{index}}">
-      <icon wx:if="{{item.answerStatus.isCollection}}" class="fa fa-star" />
-      <icon wx:if="{{item.answerStatus.isQuestion}}" class="fa fa-question-circle" />
-      <icon wx:if="{{item.answerStatus.note!=null&&item.answerStatus.note!=''}}" class="fa fa-edit" /> {{index+1}}
+    <view class="questionItem {{localAnswerStatus[item._id].lastAnswerStatus==true?'correct':''}} {{localAnswerStatus[item._id].lastAnswerStatus==false?'wrong':''}}" wx:for="{{questionList}}" wx:key="index" bindtap="gotoIndexQuestion" data-questionindex="{{index}}">
+      <icon wx:if="{{localAnswerStatus[item._id].isCollection}}" class="fa fa-star" />
+      <icon wx:if="{{localAnswerStatus[item._id].isQuestion}}" class="fa fa-question-circle" />
+      <icon wx:if="{{localAnswerStatus[item._id].note!=null&&localAnswerStatus[item._id].note!=''}}" class="fa fa-edit" /> {{index+1}}
     </view>
   </view>
 </view>

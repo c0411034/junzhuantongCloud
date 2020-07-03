@@ -6,7 +6,8 @@ function remove(titleId){
 }
 
 function get(titleId){  
-  return wx.getStorageSync('answerStatus'+titleId);
+  let result=wx.getStorageSync('answerStatus'+titleId);
+  return result==""?{}:result
 }
 
 module.exports = {
